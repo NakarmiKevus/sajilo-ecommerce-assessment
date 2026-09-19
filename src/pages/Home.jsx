@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getAllProducts } from "../services/productService";
+import { getAllProducts, getCategories } from "../services/productService";
 import ProductGrid from "../components/ProductGrid";
 
 function Home() {
@@ -8,6 +8,8 @@ function Home() {
   const [error, setError] = useState("");
 
   const [searchTerm, setSearchTerm] = useState("");
+  const [categories, setCategories] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState("");
 
   useEffect(() => {
     async function fetchProduct() {
@@ -26,9 +28,27 @@ function Home() {
     fetchProduct();
   }, []);
 
-  const filteredProducts = products.filter((p) =>
-    p.title.toLowerCase().includes(searchTerm.toLowerCase()),
-  );
+  useEffect(() => {
+    async function fetchCategories() {
+      try {
+        const data = await getCategories();
+        setCategories(data);
+      } catch (err) {
+        setError("Unable to load categories.");
+      }
+    }
+    fetchCategories();
+  }, []);
+
+  const filteredProducts = products.filter((p) => {
+    const matchedSearch = p.title
+      .toLowerCase()
+      .includes(searchTerm.toLowerCase());
+    const matchedCategory =
+      selectedCategory === "" || p.category === selectedCategory;
+
+    return matchedSearch && matchedCategory;
+  });
 
   return (
     <section>
@@ -42,9 +62,24 @@ function Home() {
         placeholder="Search products..."
       />
 
+      <select
+        value={selectedCategory}
+        onChange={(e) => setSelectedCategory(e.target.value)}
+      >
+        <option value="">All Categories</option>
+        {categories.map((c) => (
+          <option key={c.slug} value={c.slug}>
+            {c.name}
+          </option>
+        ))}
+      </select>
+
       {!loading && !error && filteredProducts.length === 0 && (
-        <p className="text-[#DC2626]">No products found for "{searchTerm}"</p>
+        <p className="text-[#DC2626]">
+          No products found matching your filters.
+        </p>
       )}
+
       {!loading && !error && filteredProducts.length > 0 && (
         <ProductGrid products={filteredProducts} />
       )}

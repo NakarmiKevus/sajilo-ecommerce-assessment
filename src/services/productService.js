@@ -11,3 +11,8 @@ export async function getProductById(id) {
   const response = await axios.get(`${BASE_URL}/${id}`);
   return response.data;
 }
+
+export async function getCategories() {
+  const response = await axios.get(`${BASE_URL}/categories`);
+  return response.data;
+}
