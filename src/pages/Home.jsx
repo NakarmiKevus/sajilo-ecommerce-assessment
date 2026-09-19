@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { getAllProducts } from "../services/productService";
+import ProductGrid from "../components/ProductGrid";
 
 function Home() {
   const [products, setProducts] = useState([]);
@@ -27,11 +28,7 @@ function Home() {
     <section>
       {loading && <p>Loading Products...</p>}
       {error && <p>{error}</p>}
-      <div>
-        {products.map((p) => (
-          <li key={p.id}>{p.title}</li>
-        ))}
-      </div>
+      {!loading && !error && <ProductGrid products={products} />}
     </section>
   );
 }
