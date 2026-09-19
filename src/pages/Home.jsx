@@ -7,6 +7,8 @@ function Home() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
+  const [searchTerm, setSearchTerm] = useState("");
+
   useEffect(() => {
     async function fetchProduct() {
       setLoading(true);
@@ -24,11 +26,28 @@ function Home() {
     fetchProduct();
   }, []);
 
+  const filteredProducts = products.filter((p) =>
+    p.title.toLowerCase().includes(searchTerm.toLowerCase()),
+  );
+
   return (
     <section>
       {loading && <p>Loading Products...</p>}
       {error && <p>{error}</p>}
-      {!loading && !error && <ProductGrid products={products} />}
+
+      <input
+        type="text"
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+        placeholder="Search products..."
+      />
+
+      {!loading && !error && filteredProducts.length === 0 && (
+        <p className="text-[#DC2626]">No products found for "{searchTerm}"</p>
+      )}
+      {!loading && !error && filteredProducts.length > 0 && (
+        <ProductGrid products={filteredProducts} />
+      )}
     </section>
   );
 }
