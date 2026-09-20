@@ -30,6 +30,7 @@ function CartProvider({ children }) {
         const newItem = {
           id: product.id,
           title: product.title,
+          brand: product.brand,
           price: product.price,
           discountPercentage: product.discountPercentage,
           thumbnail: product.thumbnail,

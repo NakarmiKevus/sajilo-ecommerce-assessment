@@ -91,11 +91,19 @@ function Home() {
           </select>
         </div>
       </div>
-      {!loading && !error && sortedProducts.length === 0 && (
-        <p className="text-[#DC2626]">
-          No products found matching your filters.
-        </p>
+
+      {!loading && !error && products.length === 0 && (
+        <p className="text-[#DC2626]">No product availability</p>
       )}
+
+      {!loading &&
+        !error &&
+        products.length > 0 &&
+        sortedProducts.length === 0 && (
+          <p className="text-[#DC2626]">
+            No products found matching your filters.
+          </p>
+        )}
 
       {!loading && !error && sortedProducts.length > 0 && (
         <>

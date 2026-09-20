@@ -13,7 +13,7 @@ export function useProducts() {
 
       try {
         const data = await getAllProducts();
-        setProducts(data.products);
+        setProducts(data.products || []);
       } catch (err) {
         setError("Unable to load products. Please try again");
       } finally {

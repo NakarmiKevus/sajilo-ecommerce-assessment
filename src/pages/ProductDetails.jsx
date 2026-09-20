@@ -18,6 +18,8 @@ function ProductDetails() {
 
   const [quantity, setQuantity] = useState(1);
 
+  const [showMessage, setShowMessage] = useState(false);
+
   useEffect(() => {
     async function fetchProductById() {
       setLoading(true);
@@ -42,10 +44,19 @@ function ProductDetails() {
     ? product.price * (1 - product.discountPercentage / 100)
     : 0;
 
+  function handleAddToCart() {
+    addToCart(product, quantity);
+    setShowMessage(true);
+
+    setTimeout(() => setShowMessage(false), 2000);
+  }
+
   return (
     <section>
       {loading && <p>Loading Products...</p>}
       {error && <p>{error}</p>}
+
+      {showMessage && <p className="text-green-600">Item added to cart!</p>}
 
       {!loading && !error && product && (
         <div className="bg-slate-50">
@@ -103,7 +114,7 @@ function ProductDetails() {
                   +
                 </button>
               </div>
-              <button onClick={() => addToCart(product, quantity)}>
+              <button onClick={handleAddToCart} disabled={product.stock === 0}>
                 Add to cart
               </button>
             </div>

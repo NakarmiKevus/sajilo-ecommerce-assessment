@@ -12,7 +12,7 @@ export function useCategories() {
       setError("");
       try {
         const data = await getCategories();
-        setCategories(data);
+        setCategories(data || []);
       } catch (err) {
         setError("Unable to load categories.");
       } finally {
