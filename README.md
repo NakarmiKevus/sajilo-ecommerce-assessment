@@ -1,16 +1,66 @@
-# React + Vite
+SajiloStore — E-commerce Product & Cart App
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+Built for the Sajilo Life Pvt. Ltd. React Developer Intern/Trainee assessment.
 
-Currently, two official plugins are available:
+Live Demo: [ADD LINK]
+GitHub Repo: https://github.com/NakarmiKevus/sajilo-ecommerce-assessment
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+Overview
 
-## React Compiler
+Browse products from the DummyJSON API, search/filter/sort them, view product details, and manage a cart that persists across page reloads.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Tech Stack
 
-## Expanding the Oxlint configuration
+React (Vite), Tailwind CSS v4, React Router, Axios, Context API, LocalStorage
+Custom hooks: useProducts, useCategories
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and Oxlint's TypeScript related rules in your project.
+Features
+
+Products
+
+Responsive grid with price, rating, discount
+Search, category filter, sort by price/rating
+Pagination
+Loading/error/empty states
+
+Product Details
+
+/product/:id page with image gallery, reviews, stock info
+Quantity picker + Add to Cart
+404 handling for invalid IDs
+
+Cart
+
+Add/remove/update quantity, capped by stock
+Subtotal, 13% tax, total
+Persists via LocalStorage
+Simple checkout (clears cart + confirmation)
+
+Other
+
+Reusable components: ProductCard, ProductGrid, CartItem, CartSummary, Pagination, Navbar
+Centralized API calls in productService.js
+Live cart count in Navbar
+Handles corrupted LocalStorage data gracefully
+Getting Started
+bash
+git clone https://github.com/NakarmiKevus/sajilo-ecommerce-assessment.git
+cd sajilo-ecommerce-assessment
+npm install
+npm run dev
+
+Open http://localhost:5173.
+
+API
+
+DummyJSON Products
+
+GET /products?limit=194
+GET /products/:id
+GET /products/categories
+Key Decisions
+All 194 products fetched upfront; search/filter/sort/pagination run client-side.
+Discounted price = price \* (1 - discountPercentage / 100).
+Cart stores only essential fields, not the full product.
+Checkout is intentionally minimal — no payment/shipping forms.
+Search/filter/sort logic stays in Home.jsx (simple page-specific state, not reusable fetch logic).
