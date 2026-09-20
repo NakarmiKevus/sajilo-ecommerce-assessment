@@ -4,14 +4,19 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { getProductById } from "../services/productService";
 
+import { useCart } from "../context/CartContext";
+
 function ProductDetails() {
   const { id } = useParams();
+  const { addToCart } = useCart();
 
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
   const [selectedImage, setSelectedImage] = useState(0);
+
+  const [quantity, setQuantity] = useState(1);
 
   useEffect(() => {
     async function fetchProductById() {
@@ -85,8 +90,22 @@ function ProductDetails() {
               <p>
                 {product.availabilityStatus} ({product.stock} available)
               </p>
-              {/* <button>1 2 </button> */}
-              <button>Add to cart</button>
+              <div className="flex items-center gap-2">
+                <button onClick={() => setQuantity((q) => Math.max(1, q - 1))}>
+                  -
+                </button>
+                <span>{quantity}</span>
+                <button
+                  onClick={() =>
+                    setQuantity((q) => Math.min(product.stock, q + 1))
+                  }
+                >
+                  +
+                </button>
+              </div>
+              <button onClick={() => addToCart(product, quantity)}>
+                Add to cart
+              </button>
             </div>
           </div>
           <div className="flex gap-6">
