@@ -11,6 +11,8 @@ function Home() {
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("");
 
+  const [sortOption, setSortOption] = useState("");
+
   useEffect(() => {
     async function fetchProduct() {
       setLoading(true);
@@ -50,6 +52,23 @@ function Home() {
     return matchedSearch && matchedCategory;
   });
 
+  const getSortedProducts = () => {
+    const sorted = [...filteredProducts];
+
+    switch (sortOption) {
+      case "price-asc":
+        return sorted.sort((a, b) => a.price - b.price);
+      case "price-desc":
+        return sorted.sort((a, b) => b.price - a.price);
+      case "rating":
+        return sorted.sort((a, b) => b.rating - a.rating);
+      default:
+        return sorted;
+    }
+  };
+
+  const sortedProducts = getSortedProducts();
+
   return (
     <section>
       {loading && <p>Loading Products...</p>}
@@ -74,14 +93,24 @@ function Home() {
         ))}
       </select>
 
-      {!loading && !error && filteredProducts.length === 0 && (
+      <select
+        value={sortOption}
+        onChange={(e) => setSortOption(e.target.value)}
+      >
+        <option value="">Default</option>
+        <option value="price-asc">Price: Low to High</option>
+        <option value="price-desc">Price: High to Low</option>
+        <option value="rating">Rating</option>
+      </select>
+
+      {!loading && !error && sortedProducts.length === 0 && (
         <p className="text-[#DC2626]">
           No products found matching your filters.
         </p>
       )}
 
-      {!loading && !error && filteredProducts.length > 0 && (
-        <ProductGrid products={filteredProducts} />
+      {!loading && !error && sortedProducts.length > 0 && (
+        <ProductGrid products={sortedProducts} />
       )}
     </section>
   );
