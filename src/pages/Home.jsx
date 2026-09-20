@@ -1,46 +1,15 @@
-import { useEffect, useState } from "react";
-import { getAllProducts, getCategories } from "../services/productService";
+import { useState } from "react";
 import ProductGrid from "../components/ProductGrid";
+import { useProducts } from "../hooks/useProducts";
+import { useCategories } from "../hooks/useCategories";
 
 function Home() {
-  const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
+  const { products, loading, error } = useProducts();
+  const { categories } = useCategories();
 
   const [searchTerm, setSearchTerm] = useState("");
-  const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("");
-
   const [sortOption, setSortOption] = useState("");
-
-  useEffect(() => {
-    async function fetchProduct() {
-      setLoading(true);
-      setError("");
-
-      try {
-        const data = await getAllProducts();
-        setProducts(data.products);
-      } catch (err) {
-        setError("Unable to load products. Please try again");
-      } finally {
-        setLoading(false);
-      }
-    }
-    fetchProduct();
-  }, []);
-
-  useEffect(() => {
-    async function fetchCategories() {
-      try {
-        const data = await getCategories();
-        setCategories(data);
-      } catch (err) {
-        setError("Unable to load categories.");
-      }
-    }
-    fetchCategories();
-  }, []);
 
   const filteredProducts = products.filter((p) => {
     const matchedSearch = p.title
