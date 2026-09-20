@@ -3,7 +3,7 @@ import axios from "axios";
 const BASE_URL = "https://dummyjson.com/products";
 
 export async function getAllProducts() {
-  const response = await axios.get(BASE_URL);
+  const response = await axios.get(`${BASE_URL}?limit=194`);
   return response.data;
 }
 

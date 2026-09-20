@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ProductGrid from "../components/ProductGrid";
 import { useProducts } from "../hooks/useProducts";
 import { useCategories } from "../hooks/useCategories";
+import Pagination from "../components/Pagination";
 
 function Home() {
   const { products, loading, error } = useProducts();
@@ -10,6 +11,9 @@ function Home() {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
   const [sortOption, setSortOption] = useState("");
+
+  const itemPerPage = 12;
+  const [currentPage, setCurrentPage] = useState(1);
 
   const filteredProducts = products.filter((p) => {
     const matchedSearch = p.title
@@ -37,6 +41,17 @@ function Home() {
   };
 
   const sortedProducts = getSortedProducts();
+
+  const totalPages = Math.ceil(sortedProducts.length / itemPerPage);
+  const startIndex = (currentPage - 1) * itemPerPage;
+  const paginationProdcut = sortedProducts.slice(
+    startIndex,
+    startIndex + itemPerPage,
+  );
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchTerm, selectedCategory, sortOption]);
 
   return (
     <section>
@@ -79,7 +94,14 @@ function Home() {
       )}
 
       {!loading && !error && sortedProducts.length > 0 && (
-        <ProductGrid products={sortedProducts} />
+        <>
+          <ProductGrid products={paginationProdcut} />
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={setCurrentPage}
+          />
+        </>
       )}
     </section>
   );
