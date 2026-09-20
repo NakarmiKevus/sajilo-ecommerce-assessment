@@ -54,10 +54,13 @@ function Home() {
   }, [searchTerm, selectedCategory, sortOption]);
 
   return (
-    <section className="flex flex-col p-4 ">
-      {loading && <p>Loading Products...</p>}
-      {error && <p>{error}</p>}
-      <div className="flex flex-col gap-6 mb-6">
+    <section className="max-w-7xl mx-auto p-4 sm:p-6">
+      {loading && (
+        <p className="text-center text-slate-500 py-12">Loading products...</p>
+      )}
+      {error && <p className="text-center text-red-600 py-12">{error}</p>}
+
+      <div className="flex flex-col gap-3 mb-6">
         <input
           type="text"
           value={searchTerm}
@@ -65,11 +68,11 @@ function Home() {
           placeholder="Search products..."
           className="rounded-lg border border-slate-300 px-3 py-2 text-sm"
         />
-        <div className="flex gap-4">
+        <div className="flex flex-col sm:flex-row gap-3">
           <select
             value={selectedCategory}
             onChange={(e) => setSelectedCategory(e.target.value)}
-            className="rounded-lg border border-slate-300 px-3 py-2 text-sm"
+            className="rounded-lg border border-slate-300 px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
             <option value="">All Categories</option>
             {categories.map((c) => (
@@ -82,7 +85,7 @@ function Home() {
           <select
             value={sortOption}
             onChange={(e) => setSortOption(e.target.value)}
-            className="rounded-lg border border-slate-300 px-3 py-2 text-sm"
+            className="rounded-lg border border-slate-300 px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
             <option value="">Default</option>
             <option value="price-asc">Price: Low to High</option>
@@ -93,14 +96,16 @@ function Home() {
       </div>
 
       {!loading && !error && products.length === 0 && (
-        <p className="text-[#DC2626]">No product availability</p>
+        <p className="text-[#DC2626] text-center py-12">
+          No product availability
+        </p>
       )}
 
       {!loading &&
         !error &&
         products.length > 0 &&
         sortedProducts.length === 0 && (
-          <p className="text-[#DC2626]">
+          <p className="text-[#DC2626] text-center py-12">
             No products found matching your filters.
           </p>
         )}

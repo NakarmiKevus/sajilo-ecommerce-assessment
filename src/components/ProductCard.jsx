@@ -15,23 +15,23 @@ function ProductCard({ product }) {
 
         <div className="flex h-40 w-full items-center justify-center overflow-hidden rounded-md bg-slate-50">
           <img
-            className="w-full h-full object-contain "
+            className="w-full h-full object-contain"
             src={product.thumbnail}
             alt={product.title}
           />
         </div>
-        <h3 className="mt-1 text-[#1F2937] text-base font-semibold leading-6">
+        <h3 className="mt-1 line-clamp-1 text-base font-semibold leading-6 text-slate-800">
           {product.title}
         </h3>
-        <p className="text-[#64748B] text-[13px] font-normal leading-5">
+        <p className="text-[13px] font-normal leading-5 text-slate-500">
           {product.brand}
         </p>
-        <p className="text-[#475569] text-[13px] font-medium leading-5">
+        <p className="text-[13px] font-medium leading-5 text-slate-600">
           ⭐{product.rating.toFixed(1)}
         </p>
-        <p className="text-[#111827] text-lg font-bold leading-6">
+        <p className="text-lg font-bold leading-6 text-slate-900">
           ${discountedPrice.toFixed(2)}{" "}
-          <span className="line-through text-[#94A3B8] text-[13px] font-normal leading-5">
+          <span className="text-[13px] font-normal leading-5 text-slate-400 line-through">
             ${product.price.toFixed(2)}
           </span>
         </p>

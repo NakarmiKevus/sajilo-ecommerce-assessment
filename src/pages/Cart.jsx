@@ -7,22 +7,39 @@ function Cart() {
   const { cartItems } = useCart();
 
   return (
-    <section>
-      <h1>Your Cart ({cartItems.length} items)</h1>
+    <section className="max-w-6xl mx-auto p-4 sm:p-6">
+      <h1 className="text-xl font-semibold text-slate-800 mb-6">
+        Your Cart ({cartItems.length} items)
+      </h1>
 
       {cartItems.length === 0 ? (
-        <p>
-          Your cart is empty. <Link to="/">Continue Shopping</Link>
-        </p>
+        <div className="flex flex-col items-center justify-center gap-3 rounded-xl border border-slate-200 bg-white py-16 text-center">
+          <span className="text-4xl">🛒</span>
+          <p className="text-slate-600">Your cart is empty.</p>
+          <Link
+            to="/"
+            className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
+          >
+            Continue Shopping
+          </Link>
+        </div>
       ) : (
-        <div className="flex gap-6">
-          <div className="flex-1">
+        <div className="flex flex-col lg:flex-row gap-6">
+          <div className="flex-1 rounded-xl border border-slate-200 bg-white p-4 sm:p-6">
             {cartItems.map((item) => (
               <CartItem key={item.id} item={item} />
             ))}
-            <Link to="/">Continue Shopping</Link>
+            <Link
+              to="/"
+              className="mt-4 inline-flex items-center gap-1 text-sm text-slate-600 hover:text-blue-600"
+            >
+              ← Continue Shopping
+            </Link>
           </div>
-          <CartSummary />
+
+          <div className="lg:w-80">
+            <CartSummary />
+          </div>
         </div>
       )}
     </section>
